@@ -1,0 +1,19 @@
+{
+  "name": "shopping-cart",
+  "version": "1.0.0",
+  "description": "Test Driven Shopping Cart",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "live-server --port=3000 src"
+  },
+  "author": "ken@vanillacoding.co",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "live-server": "^1.2.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3"
+  }
+}
