@@ -47,24 +47,37 @@ const products = [
 
 */
 function addProductToCart(productId) {
-  let product = null;
-  let isProductInCart = false;
+  // 버전 1: forEach + push
+  // let product = null;
+  // let isProductInCart = false;
+  // products.forEach(function (item) {
+  //   if (item.productId === productId) {
+  //     item.quantity += 1;
+  //     product = item;
+  //   }
+  // });
+  // cart.forEach(function (item) {
+  //   if (item.productId === productId) {
+  //     isProductInCart = true;
+  //   }
+  // });
+  // if (!isProductInCart) {
+  //   cart.push(product);
+  // }
 
-  products.forEach(function (item) {
-    if (item.productId === productId) {
-      item.quantity += 1;
-      product = item;
-    }
+  // 버전 2: find + indexOf + push
+  const product = products.find(function (item) {
+    return item.productId === productId;
   });
 
-  cart.forEach(function (item) {
-    if (item.productId === productId) {
-      isProductInCart = true;
-    }
-  });
+  if (product) {
+    product.quantity += 1;
 
-  if (!isProductInCart) {
-    cart.push(product);
+    const isProductInCart = cart.indexOf(product) !== -1;
+
+    if (!isProductInCart) {
+      cart.push(product);
+    }
   }
 }
 
@@ -95,11 +108,9 @@ function increaseQuantity(productId) {
 
 */
 function decreaseQuantity(productId) {
-  // for...of
   for (const product of products) {
     if (product.productId === productId) {
       product.quantity -= 1;
-
       if (product.quantity === 0) {
         removeProductFromCart(productId);
       }
@@ -118,22 +129,34 @@ function decreaseQuantity(productId) {
 
 */
 function removeProductFromCart(productId) {
-  let index = -1;
+  // 버전 1: forEach + splice
+  // let index = -1;
+  // cart.forEach(function (item, i) {
+  //   if (item.productId === productId) {
+  //     index = i;
+  //   }
+  // });
+  // products.forEach(function (item) {
+  //   if (item.productId === productId) {
+  //     item.quantity = 0;
+  //   }
+  // });
+  // if (index !== -1) {
+  //   cart.splice(index, 1);
+  // }
 
-  cart.forEach(function (item, i) {
-    if (item.productId === productId) {
-      index = i;
-    }
+  // 버전 2: find + indexOf + splice
+  const product = products.find(function (item) {
+    return item.productId === productId;
   });
 
-  products.forEach(function (item) {
-    if (item.productId === productId) {
-      item.quantity = 0;
-    }
-  });
+  if (product) {
+    const itemIndex = cart.indexOf(product);
 
-  if (index !== -1) {
-    cart.splice(index, 1);
+    if (itemIndex !== -1) {
+      product.quantity = 0;
+      cart.splice(itemIndex, 1);
+    }
   }
 }
 
