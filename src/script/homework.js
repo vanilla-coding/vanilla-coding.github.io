@@ -94,9 +94,7 @@ function cartTotal() {
 
 */
 function pay(amount) {
-  const total = cartTotal();
-
-  return amount - total;
+  // TODO..
 }
 
 /*
