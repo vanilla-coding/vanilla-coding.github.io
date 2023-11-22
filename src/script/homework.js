@@ -12,7 +12,29 @@ const cart = [];
   - image: 상품 이미지 주소 - "images/xxx.jpg" (url 문자열) 
 
 */
-const products = [];
+const products = [
+  {
+    name: "맥북 2030",
+    price: 10000,
+    quantity: 0,
+    productId: 1,
+    image: "images/macbook.jpg",
+  },
+  {
+    name: "갤럭시 999",
+    price: 8000,
+    quantity: 0,
+    productId: 2,
+    image: "images/samsung.jpg",
+  },
+  {
+    name: "테슬라 XYZ",
+    price: 50000,
+    quantity: 0,
+    productId: 3,
+    image: "images/tesla.jpg",
+  },
+];
 
 /*
 
@@ -24,8 +46,26 @@ const products = [];
   - `addProductToCart` 함수는 만약 해당 상품이 `cart` 배열에 아직 담겨있지 않은 상품이라면, `cart` 배열에 해당 상품 객체를 추가해야 합니다.
 
 */
-function addProductToCart() {
-  // TODO..
+function addProductToCart(productId) {
+  let product = null;
+  let isProductInCart = false;
+
+  products.forEach(function (item) {
+    if (item.productId === productId) {
+      item.quantity += 1;
+      product = item;
+    }
+  });
+
+  cart.forEach(function (item) {
+    if (item.productId === productId) {
+      isProductInCart = true;
+    }
+  });
+
+  if (!isProductInCart) {
+    cart.push(product);
+  }
 }
 
 /*
@@ -37,8 +77,12 @@ function addProductToCart() {
   - `increaseQuantity` 함수는 해당 상품의 `quantity`를 증가시켜야 합니다.
 
 */
-function increaseQuantity() {
-  // TODO..
+function increaseQuantity(productId) {
+  for (let i = 0; i < products.length; i++) {
+    if (products[i].productId === productId) {
+      products[i].quantity += 1;
+    }
+  }
 }
 
 /*
@@ -50,8 +94,17 @@ function increaseQuantity() {
   - `decreaseQuantity` 함수는 해당 상품의 `quantity`를 감소시켜야 합니다.
 
 */
-function decreaseQuantity() {
-  // TODO..
+function decreaseQuantity(productId) {
+  // for...of
+  for (const product of products) {
+    if (product.productId === productId) {
+      product.quantity -= 1;
+
+      if (product.quantity === 0) {
+        removeProductFromCart(productId);
+      }
+    }
+  }
 }
 
 /*
@@ -64,8 +117,24 @@ function decreaseQuantity() {
   - `removeProductFromCart` 함수는 해당 상품 데이터 객체를 `cart` 배열에서 삭제해야 합니다.
 
 */
-function removeProductFromCart() {
-  // TODO..
+function removeProductFromCart(productId) {
+  let index = -1;
+
+  cart.forEach(function (item, i) {
+    if (item.productId === productId) {
+      index = i;
+    }
+  });
+
+  products.forEach(function (item) {
+    if (item.productId === productId) {
+      item.quantity = 0;
+    }
+  });
+
+  if (index !== -1) {
+    cart.splice(index, 1);
+  }
 }
 
 /*
@@ -78,7 +147,13 @@ function removeProductFromCart() {
 
 */
 function cartTotal() {
-  // TODO..
+  let totalPrice = 0;
+
+  for (let i = 0; i < cart.length; i++) {
+    totalPrice += cart[i].quantity * cart[i].price;
+  }
+
+  return totalPrice;
 }
 
 /*
@@ -94,7 +169,10 @@ function cartTotal() {
 
 */
 function pay(amount) {
-  // TODO..
+  const totalPrice = cartTotal();
+  const diff = amount - totalPrice;
+
+  return diff;
 }
 
 /*
