@@ -20,7 +20,7 @@ function drawProducts() {
 
   products.forEach((product) => {
     productsHTML += `
-      <div data-productId='${product.id}'>
+      <div data-product-id='${product.id}'>
         <img src='${product.image}'>
         <h3>${product.name}</h3>
         <p>price: ${CURRENCY_SYMBOL}${product.price}</p>
@@ -39,7 +39,7 @@ function drawCart() {
     const itemTotal = cartItem.price * cartItem.quantity;
 
     cartItems += `
-      <div data-productId='${cartItem.id}'>
+      <div data-product-id='${cartItem.id}'>
         <h3>${cartItem.name}</h3>
         <p>price: ${CURRENCY_SYMBOL}${cartItem.price}</p>
         <p>quantity: ${cartItem.quantity}</p>
@@ -69,12 +69,11 @@ function drawCartTotal() {
 }
 
 function runCartFunction(e, func) {
-  let productId = e.target.parentNode.dataset.productId;
-  productId *= 1;
+  const productId = Number(e.target.parentNode.dataset.productId);
 
   for (let i = cart.length - 1; i > -1; i--) {
-    if (cart[i].productId === productId) {
-      let productId = cart[i].productId;
+    if (cart[i].id === productId) {
+      let productId = cart[i].id;
       func(productId);
     }
   }
@@ -84,8 +83,8 @@ function runCartFunction(e, func) {
 }
 
 productsElement.addEventListener("click", (e) => {
-  let productId = e.target.parentNode.dataset.productId;
-  productId *= 1;
+  const productId = Number(e.target.parentNode.dataset.productId);
+
   addProductToCart(productId);
   drawCart();
   drawCartTotal();
@@ -106,9 +105,7 @@ payButtonElement.addEventListener("click", (e) => {
 
   const receivedElement = document.querySelector(".received");
 
-  let receivedAmount = receivedElement.value;
-  receivedAmount *= 1;
-
+  const receivedAmount = Number(receivedElement.value);
   const cashReturn = pay(receivedAmount);
 
   const paymentSummary = document.querySelector(".pay-summary");
@@ -125,12 +122,13 @@ payButtonElement.addEventListener("click", (e) => {
 
     div.innerHTML = `
       <p>받은 금액: ${CURRENCY_SYMBOL}${receivedAmount}</p>
-      <p>부족한 금액: ${cashReturn}$</p>
+      <p>부족한 금액: ${cashReturn}</p>
       <p>추가 결제가 필요합니다.</p>
       <hr/>
     `;
   }
 
+  paymentSummary.innerHTML = "";
   paymentSummary.append(div);
 });
 
